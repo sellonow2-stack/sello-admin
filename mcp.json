@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+      "admin-backend": {
+        "command": "node",
+        "args": ["./admin-mcp/dist/index.js"],
+        "env": {
+          "ADMIN_API_URL": "http://localhost:3000"
+        }
+      }
+    }
+  }
