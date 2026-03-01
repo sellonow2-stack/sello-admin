@@ -24,7 +24,7 @@ export interface PlanRecord {
   code: string | null
   price_cents: number
   currency: string
-  billing_period: string | null
+  billing_period: 'monthly' | 'yearly' | null
   included_ai_images_per_month: number
   included_text_announcements_per_week: number
   export_enabled: boolean

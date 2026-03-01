@@ -8,7 +8,7 @@ export interface Plan {
   code: string | null
   price_cents: number
   currency: string
-  billing_period: string | null
+  billing_period: 'monthly' | 'yearly' | null
   included_ai_images_per_month: number
   included_text_announcements_per_week: number
   export_enabled: boolean
@@ -82,7 +82,11 @@ export function usePlans() {
   }
 
   const updatePlan = async (id: number, input: Partial<Omit<Plan, 'id' | 'created_at' | 'stripe_price_id' | 'stripe_product_id'>>) => {
-    await adminPlansApi.update(id, input)
+    await adminPlansApi.update(id, {
+      ...input,
+      code: input.code ?? undefined,
+      billing_period: input.billing_period ?? undefined,
+    })
     await load()
   }
 
