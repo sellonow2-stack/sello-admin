@@ -32,7 +32,7 @@ const NAV_ITEMS = [
   },
   {
     to: '/plans',
-    label: 'Plans',
+    label: 'Plans & Paiements',
     icon: CreditCard,
     module: '06',
   },

@@ -128,3 +128,38 @@ export const adminCustomersApi = {
       body: JSON.stringify({ name, email }),
     }),
 }
+
+// ─── Payment Links ─────────────────────────────────────────────────────────────
+
+export interface PaymentLinkRecord {
+  id: string
+  url: string
+  active: boolean
+  customerId: string | null
+  customerName: string | null
+  customerEmail: string | null
+  priceId: string | null
+  userId: string | null
+}
+
+export const paymentLinksApi = {
+  list: () =>
+    apiFetch<PaymentLinkRecord[]>('/admin/payment-links'),
+
+  create: (payload: {
+    userId: string
+    userEmail?: string
+    userName?: string
+    priceId: string
+    redirectUrl?: string
+  }) =>
+    apiFetch<PaymentLinkRecord>('/admin/payment-links', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
+  deactivate: (id: string) =>
+    apiFetch<{ id: string; active: boolean }>(`/admin/payment-links/${id}/deactivate`, {
+      method: 'PATCH',
+    }),
+}
