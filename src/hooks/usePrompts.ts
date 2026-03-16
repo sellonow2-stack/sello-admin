@@ -137,6 +137,20 @@ export function usePrompts(promptType: PromptType) {
     await load()
   }
 
+  // Supprime définitivement une version (interdit sur la version active)
+  async function deleteVersion(id: string) {
+    const target = versions.find(v => v.id === id)
+    if (target?.is_active) throw new Error('Impossible de supprimer la version active.')
+
+    const { error: deleteErr } = await supabase
+      .from('prompt_versions')
+      .delete()
+      .eq('id', id)
+    if (deleteErr) throw new Error(deleteErr.message)
+
+    await load()
+  }
+
   return {
     versions,
     activeVersion,
@@ -147,5 +161,6 @@ export function usePrompts(promptType: PromptType) {
     activateVersion,
     startAbTest,
     stopAbTest,
+    deleteVersion,
   }
 }

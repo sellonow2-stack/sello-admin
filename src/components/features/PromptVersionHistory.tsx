@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { History, CheckCircle2, Eye, X } from 'lucide-react'
+import { History, CheckCircle2, Eye, X, Trash2, AlertTriangle } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/utils/cn'
@@ -9,12 +9,28 @@ interface PromptVersionHistoryProps {
   versions: PromptVersion[]
   isLoading: boolean
   onActivate: (id: string) => Promise<void>
+  onDelete: (id: string) => Promise<void>
 }
 
-export function PromptVersionHistory({ versions, isLoading, onActivate }: PromptVersionHistoryProps) {
+export function PromptVersionHistory({ versions, isLoading, onActivate, onDelete }: PromptVersionHistoryProps) {
   const [activatingId, setActivatingId] = useState<string | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [confirmDeleteVersion, setConfirmDeleteVersion] = useState<PromptVersion | null>(null)
   const [previewVersion, setPreviewVersion] = useState<PromptVersion | null>(null)
   const [activateError, setActivateError] = useState<string | null>(null)
+
+  async function handleDelete(version: PromptVersion) {
+    setDeletingId(version.id)
+    setActivateError(null)
+    try {
+      await onDelete(version.id)
+    } catch (e) {
+      setActivateError(e instanceof Error ? e.message : 'Erreur lors de la suppression')
+    } finally {
+      setDeletingId(null)
+      setConfirmDeleteVersion(null)
+    }
+  }
 
   // Exclure les versions A/B test de l'historique principal
   const mainVersions = versions.filter(v => !v.is_ab_test)
@@ -106,13 +122,23 @@ export function PromptVersionHistory({ versions, isLoading, onActivate }: Prompt
                     <Eye size={13} />
                   </button>
                   {!version.is_active && (
-                    <button
-                      onClick={() => handleActivate(version)}
-                      disabled={activatingId === version.id}
-                      className="px-2.5 py-1 text-xs bg-gray-700 hover:bg-indigo-500/20 hover:text-indigo-400 text-gray-400 rounded-md transition-colors disabled:opacity-50"
-                    >
-                      {activatingId === version.id ? '…' : 'Activer'}
-                    </button>
+                    <>
+                      <button
+                        onClick={() => handleActivate(version)}
+                        disabled={activatingId === version.id}
+                        className="px-2.5 py-1 text-xs bg-gray-700 hover:bg-indigo-500/20 hover:text-indigo-400 text-gray-400 rounded-md transition-colors disabled:opacity-50"
+                      >
+                        {activatingId === version.id ? '…' : 'Activer'}
+                      </button>
+                      <button
+                        onClick={() => setConfirmDeleteVersion(version)}
+                        disabled={deletingId === version.id}
+                        className="p-1.5 rounded-md text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                        title="Supprimer cette version"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
@@ -124,6 +150,45 @@ export function PromptVersionHistory({ versions, isLoading, onActivate }: Prompt
           <p className="mt-2 text-xs text-red-400">{activateError}</p>
         )}
       </Card>
+
+      {/* Modal de confirmation de suppression */}
+      {confirmDeleteVersion && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-2xl w-full max-w-sm mx-4">
+            <div className="p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-9 w-9 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
+                  <AlertTriangle size={16} className="text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-white">Supprimer cette version ?</h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {confirmDeleteVersion.label ?? `Version ${confirmDeleteVersion.version_number}`} · v{confirmDeleteVersion.version_number}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-gray-400 mb-5">
+                Cette action est irréversible. La version sera définitivement supprimée de la base de données.
+              </p>
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => setConfirmDeleteVersion(null)}
+                  className="px-3 py-1.5 text-xs text-gray-400 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={() => handleDelete(confirmDeleteVersion)}
+                  disabled={deletingId === confirmDeleteVersion.id}
+                  className="px-3 py-1.5 text-xs text-white bg-red-500/80 hover:bg-red-500 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  {deletingId === confirmDeleteVersion.id ? 'Suppression…' : 'Supprimer'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal d'aperçu */}
       {previewVersion && (

@@ -25,6 +25,7 @@ export default function PromptsPage() {
     activateVersion,
     startAbTest,
     stopAbTest,
+    deleteVersion,
   } = usePrompts(activeTab)
 
   return (
@@ -87,6 +88,7 @@ export default function PromptsPage() {
             versions={versions}
             isLoading={isLoading}
             onActivate={activateVersion}
+            onDelete={deleteVersion}
           />
           <AbTestCard
             abTestVersion={abTestVersion}
