@@ -163,3 +163,44 @@ export const paymentLinksApi = {
       method: 'PATCH',
     }),
 }
+
+// ─── Legal Documents ──────────────────────────────────────────────────────────
+
+export type LegalDocType = 'cgu' | 'cgv' | 'privacy_policy'
+
+export interface LegalDocRecord {
+  id: string
+  type: LegalDocType
+  content: string
+  version: string
+  published: boolean
+  created_at: string
+  updated_at: string
+}
+
+export const adminLegalApi = {
+  list: () => apiFetch<LegalDocRecord[]>('/admin/legal'),
+
+  create: (dto: {
+    type: LegalDocType
+    content: string
+    version?: string
+    published?: boolean
+  }) =>
+    apiFetch<LegalDocRecord>('/admin/legal', {
+      method: 'POST',
+      body: JSON.stringify(dto),
+    }),
+
+  update: (
+    id: string,
+    dto: Partial<{ content: string; version: string; published: boolean }>,
+  ) =>
+    apiFetch<LegalDocRecord>(`/admin/legal/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(dto),
+    }),
+
+  remove: (id: string) =>
+    apiFetch<void>(`/admin/legal/${id}`, { method: 'DELETE' }),
+}

@@ -6,6 +6,7 @@ import {
   CreditCard,
   Wand2,
   HeartHandshake,
+  FileText,
   LogOut,
 } from 'lucide-react'
 import { cn } from '@/utils/cn'
@@ -47,6 +48,12 @@ const NAV_ITEMS = [
     label: 'Support',
     icon: HeartHandshake,
     module: '05',
+  },
+  {
+    to: '/legal',
+    label: 'Docs légaux',
+    icon: FileText,
+    module: '07',
   },
 ]
 

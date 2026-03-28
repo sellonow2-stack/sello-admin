@@ -8,6 +8,7 @@ import PromptsPage from '@/pages/PromptsPage'
 import SupportPage from '@/pages/SupportPage'
 import PlansPage from '@/pages/PlansPage'
 import LoginPage from '@/pages/LoginPage'
+import LegalPage from '@/pages/LegalPage'
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
           { path: 'plans', element: <PlansPage /> },
           { path: 'prompts', element: <PromptsPage /> },
           { path: 'support', element: <SupportPage /> },
+          { path: 'legal', element: <LegalPage /> },
         ],
       },
     ],
