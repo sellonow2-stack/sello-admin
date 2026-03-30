@@ -89,9 +89,9 @@ export default function LegalPage() {
   const existingDoc = getLatestByType(activeTab)
 
   return (
-    <div className="space-y-6">
+    <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-lg bg-indigo-500/10 flex items-center justify-center">
             <FileText size={18} className="text-indigo-400" />
@@ -115,7 +115,7 @@ export default function LegalPage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-800">
-        <nav className="flex gap-1">
+        <nav className="flex gap-1 overflow-x-auto">
           {TABS.map(tab => (
             <button
               key={tab.type}
@@ -138,7 +138,7 @@ export default function LegalPage() {
       {/* Editor panel */}
       <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 space-y-5">
         {/* Meta row */}
-        <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-white">{activeTabMeta.description}</p>
             {existingDoc && (

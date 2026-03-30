@@ -120,7 +120,7 @@ export function UserDetailDrawer({ userId, onClose }: UserDetailDrawerProps) {
       {/* Drawer */}
       <div
         className={cn(
-          'fixed right-0 top-0 h-full w-[520px] bg-gray-900 border-l border-gray-800 z-40',
+          'fixed right-0 top-0 h-full w-full sm:w-[520px] bg-gray-900 border-l border-gray-800 z-40',
           'flex flex-col transition-transform duration-300 ease-in-out',
           isOpen ? 'translate-x-0' : 'translate-x-full',
         )}

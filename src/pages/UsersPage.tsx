@@ -49,9 +49,9 @@ export default function UsersPage() {
 
   return (
     <>
-      <div className="px-8 py-8 max-w-7xl mx-auto">
+      <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-white">Utilisateurs</h1>
             <p className="text-sm text-gray-400 mt-0.5">
@@ -60,7 +60,7 @@ export default function UsersPage() {
           </div>
           <button
             onClick={() => exportCsv(filtered)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-700 text-sm text-gray-400 hover:text-white hover:border-gray-600 transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-700 text-sm text-gray-400 hover:text-white hover:border-gray-600 transition-colors cursor-pointer w-fit"
           >
             <Download size={15} />
             Exporter CSV
@@ -87,6 +87,7 @@ export default function UsersPage() {
 
         {/* Table */}
         <div className="rounded-xl border border-gray-800 overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-800 bg-gray-900/50">
@@ -206,6 +207,7 @@ export default function UsersPage() {
               {search ? `Aucun résultat pour "${search}"` : 'Aucun utilisateur'}
             </div>
           )}
+          </div>
         </div>
       </div>
 

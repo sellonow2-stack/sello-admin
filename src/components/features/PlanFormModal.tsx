@@ -143,7 +143,7 @@ export function PlanFormModal({ open, plan, onClose, onSave }: PlanFormModalProp
               {/* Identité */}
               <section>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Identité</p>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field label="Nom du plan">
                     <input
                       className={inputCls}
@@ -234,7 +234,7 @@ export function PlanFormModal({ open, plan, onClose, onSave }: PlanFormModalProp
               {/* Limites */}
               <section>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Limites & quotas</p>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field label="Images IA / mois">
                     <input
                       type="number" min="0"
@@ -281,7 +281,7 @@ export function PlanFormModal({ open, plan, onClose, onSave }: PlanFormModalProp
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-gray-800 flex items-center justify-between gap-3 flex-shrink-0">
+            <div className="px-6 py-4 border-t border-gray-800 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
               {error && <p className="text-xs text-red-400 flex-1">{error}</p>}
               {!error && !isEdit && (
                 <p className="text-xs text-gray-600 flex-1">Un produit + prix seront créés sur Stripe</p>

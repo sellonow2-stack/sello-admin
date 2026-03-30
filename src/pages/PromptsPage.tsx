@@ -29,7 +29,7 @@ export default function PromptsPage() {
   } = usePrompts(activeTab)
 
   return (
-    <div className="px-8 py-8">
+    <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       {/* En-tête */}
       <div className="flex items-center gap-3 mb-8">
         <div className="h-9 w-9 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
@@ -42,7 +42,7 @@ export default function PromptsPage() {
       </div>
 
       {/* Tabs Studio / Lifestyle / Analyze */}
-      <div className="flex gap-1 mb-6 bg-gray-900 border border-gray-800 rounded-xl p-1 w-fit">
+      <div className="flex gap-1 mb-6 bg-gray-900 border border-gray-800 rounded-xl p-1 w-fit max-w-full overflow-x-auto">
         {TABS.map(tab => (
           <button
             key={tab.type}

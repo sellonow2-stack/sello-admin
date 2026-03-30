@@ -38,16 +38,16 @@ export default function DashboardPage() {
     data?.ageDistribution.reduce((acc, d) => acc + d.count, 0) ?? 0
 
   return (
-    <div className="px-8 py-8 max-w-7xl mx-auto">
+    <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white">Vue Macro</h1>
           <p className="text-sm text-gray-400 mt-0.5">Business Health — North Star Metrics</p>
         </div>
 
         {/* Sélecteur de période */}
-        <div className="flex items-center gap-1 bg-gray-900 border border-gray-800 rounded-lg p-1">
+        <div className="flex items-center gap-1 bg-gray-900 border border-gray-800 rounded-lg p-1 w-fit">
           {PERIODS.map(p => (
             <button
               key={p.value}
