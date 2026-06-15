@@ -27,7 +27,7 @@ export interface UserDetail {
     cancel_at_period_end: boolean
     plan: Plan | null
   } | null
-  wallet: { balance_credits: number; text_only_credits: number; credit_add: number } | null
+  wallet: { balance_credits: number; text_only_credits: number; credit_add: number; credit_add_image: number } | null
   recentAnnouncements: Array<{
     id: string
     title: string | null
@@ -59,6 +59,7 @@ type RawWallet = {
   balance_credits: number
   text_only_credits: number
   credit_add: number
+  credit_add_image: number
 }
 
 export function useUserDetail(userId: string | null) {
@@ -82,7 +83,7 @@ export function useUserDetail(userId: string | null) {
           .single(),
         supabase
           .from('credit_wallets')
-          .select('user_id, balance_credits, text_only_credits, credit_add')
+          .select('user_id, balance_credits, text_only_credits, credit_add, credit_add_image')
           .eq('user_id', userId)
           .maybeSingle(),
         supabase
@@ -153,10 +154,15 @@ export function useUserDetail(userId: string | null) {
     const current = data.wallet[field]
     const newValue = Math.max(0, current + delta)
 
+    const walletUpdate =
+      field === 'credit_add'
+        ? { credit_add: newValue, credit_add_image: newValue }
+        : { [field]: newValue }
+
     const [walletRes, txRes] = await Promise.all([
       supabase
         .from('credit_wallets')
-        .update({ [field]: newValue })
+        .update(walletUpdate)
         .eq('user_id', userId),
       supabase
         .from('credit_transactions')

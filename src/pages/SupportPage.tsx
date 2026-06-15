@@ -1,11 +1,14 @@
 import { HeartHandshake } from 'lucide-react'
 import { useSupport } from '@/hooks/useSupport'
+import { useBugReports } from '@/hooks/useBugReports'
 import { ChurnAlerts } from '@/components/features/ChurnAlerts'
 import { CohortTable } from '@/components/features/CohortTable'
 import { CrispDashboard } from '@/components/features/CrispDashboard'
+import { BugReportsTable } from '@/components/features/BugReportsTable'
 
 export default function SupportPage() {
   const { churnAlerts, cohortRows, isLoading, error } = useSupport()
+  const { reports, isLoading: bugReportsLoading, error: bugReportsError, refresh, updateStatus } = useBugReports()
 
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
@@ -21,13 +24,21 @@ export default function SupportPage() {
       </div>
 
       {/* Erreur globale */}
-      {error && (
+      {(error || bugReportsError) && (
         <div className="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-sm text-red-400">
-          Erreur de chargement : {error}
+          Erreur de chargement : {error ?? bugReportsError}
         </div>
       )}
 
       <div className="space-y-6">
+        {/* Section 0 — Signalements de bugs */}
+        <BugReportsTable
+          reports={reports}
+          isLoading={bugReportsLoading}
+          onRefresh={refresh}
+          onUpdateStatus={updateStatus}
+        />
+
         {/* Section 1 — Alertes Churn */}
         <ChurnAlerts alerts={churnAlerts} isLoading={isLoading} />
 
