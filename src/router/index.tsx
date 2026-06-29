@@ -9,6 +9,7 @@ import SupportPage from '@/pages/SupportPage'
 import PlansPage from '@/pages/PlansPage'
 import LoginPage from '@/pages/LoginPage'
 import LegalPage from '@/pages/LegalPage'
+import AffiliatePage from '@/pages/AffiliatePage'
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
           { path: 'dashboard', element: <DashboardPage /> },
           { path: 'analytics', element: <AnalyticsPage /> },
           { path: 'users', element: <UsersPage /> },
+          { path: 'affiliate', element: <AffiliatePage /> },
           { path: 'plans', element: <PlansPage /> },
           { path: 'prompts', element: <PromptsPage /> },
           { path: 'support', element: <SupportPage /> },

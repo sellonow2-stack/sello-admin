@@ -1,4 +1,11 @@
-const BASE_URL = import.meta.env.VITE_BACKEND_URL as string
+// En dev : requêtes relatives → proxy Vite vers localhost:3000 (évite CORS)
+const rawBackendUrl = import.meta.env.VITE_BACKEND_URL as string | undefined
+const BASE_URL =
+  import.meta.env.DEV &&
+  (!rawBackendUrl ||
+    /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/.test(rawBackendUrl))
+    ? ''
+    : (rawBackendUrl ?? '')
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, {
@@ -203,4 +210,52 @@ export const adminLegalApi = {
 
   remove: (id: string) =>
     apiFetch<void>(`/admin/legal/${id}`, { method: 'DELETE' }),
+}
+
+// ─── Affiliate Links ──────────────────────────────────────────────────────────
+
+export interface AffiliateLinkRecord {
+  id: string
+  code: string
+  name: string
+  level: 'micro' | 'partner'
+  notes: string | null
+  signup_count: number
+  max_signups: number
+  is_active: boolean
+  last_signup_at: string | null
+  created_at: string
+  updated_at: string
+  url: string
+  signups_total: number
+  signups_last_30_days: number
+  signups_confirmed: number
+}
+
+export interface CreateAffiliateLinkPayload {
+  name: string
+  level: 'micro' | 'partner'
+  notes?: string
+  code?: string
+  max_signups?: number
+}
+
+export const adminAffiliateApi = {
+  list: () => apiFetch<AffiliateLinkRecord[]>('/admin/affiliate-links'),
+  get: (id: string) => apiFetch<AffiliateLinkRecord>(`/admin/affiliate-links/${id}`),
+  create: (dto: CreateAffiliateLinkPayload) =>
+    apiFetch<AffiliateLinkRecord>('/admin/affiliate-links', {
+      method: 'POST',
+      body: JSON.stringify(dto),
+    }),
+  update: (
+    id: string,
+    dto: Partial<CreateAffiliateLinkPayload & { is_active: boolean }>,
+  ) =>
+    apiFetch<AffiliateLinkRecord>(`/admin/affiliate-links/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(dto),
+    }),
+  remove: (id: string) =>
+    apiFetch<void>(`/admin/affiliate-links/${id}`, { method: 'DELETE' }),
 }

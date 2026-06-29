@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   BarChart2,
   Users,
+  Link,
   CreditCard,
   Wand2,
   HeartHandshake,
@@ -36,6 +37,12 @@ const NAV_ITEMS = [
     label: 'Utilisateurs',
     icon: Users,
     module: '03',
+  },
+  {
+    to: '/affiliate',
+    label: 'Parrainage',
+    icon: Link,
+    module: '03b',
   },
   {
     to: '/plans',
