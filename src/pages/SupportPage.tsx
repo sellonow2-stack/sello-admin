@@ -3,7 +3,6 @@ import { useSupport } from '@/hooks/useSupport'
 import { useBugReports } from '@/hooks/useBugReports'
 import { ChurnAlerts } from '@/components/features/ChurnAlerts'
 import { CohortTable } from '@/components/features/CohortTable'
-import { CrispDashboard } from '@/components/features/CrispDashboard'
 import { BugReportsTable } from '@/components/features/BugReportsTable'
 
 export default function SupportPage() {
@@ -44,9 +43,6 @@ export default function SupportPage() {
 
         {/* Section 2 — Analyse de Cohorte */}
         <CohortTable rows={cohortRows} isLoading={isLoading} />
-
-        {/* Section 3 — Feedback Loop Crisp */}
-        <CrispDashboard />
       </div>
     </div>
   )
